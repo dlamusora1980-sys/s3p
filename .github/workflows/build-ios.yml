@@ -1,7 +1,7 @@
 name: Build Unity iOS IPA (s3p)
 
 on:
-  workflow_dispatch: # Запуск вручную из вкладки Actions
+  workflow_dispatch: # Ручной запуск из вкладки Actions
   push:
     branches:
       - master
@@ -27,13 +27,13 @@ jobs:
       - name: Unity Builder (Create Xcode Project)
         uses: game-ci/unity-builder@v4
         env:
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           targetPlatform: iOS
           unityVersion: 2022.3.62f3
           buildName: s3p_iOS
           buildsPath: build
-          customParameters: -manualLicenseFile
 
       - name: Upload Xcode Project Artifact
         uses: actions/upload-artifact@v4
@@ -61,9 +61,9 @@ jobs:
         run: |
           cat <<EOF > build/iOS/ExportOptions.plist
           <?xml version="1.0" encoding="UTF-8"?>
-          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.plist">
           <plist version="1.0">
-          dict>
+          <dict>
               <key>method</key>
               <string>development</string>
               <key>compileBitcode</key>
