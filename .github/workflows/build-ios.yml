@@ -8,7 +8,7 @@ on:
       - main
 
 jobs:
-  # 1. Сборка проекта Unity в Xcode-проект
+  # 1. Сборка проекта Unity в Xcode-проект на Ubuntu
   buildWithUnity:
     name: Build Unity Project to Xcode
     runs-on: ubuntu-latest
@@ -32,6 +32,7 @@ jobs:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
           targetPlatform: iOS
+          unityVersion: 2022.3.62f3
           buildName: s3p_iOS
           buildsPath: build
 
@@ -42,7 +43,7 @@ jobs:
           path: build/iOS
           retention-days: 1
 
-  # 2. Сборка и экспорт .IPA через Xcode на macOS
+  # 2. Компиляция и экспорт .IPA через Xcode на macOS
   buildIPA:
     name: Build & Sign IPA using Xcode
     needs: buildWithUnity
