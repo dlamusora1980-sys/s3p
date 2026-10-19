@@ -1,0 +1,20 @@
+workflows:
+  unity-ios-workflow:
+    name: Unity iOS Build
+    instance_type: mac_mini_m1
+    environment:
+      unity: latest
+    scripts:
+      - name: Build Unity project for iOS
+        script: |
+          # Команда для запуска экспорта проекта Unity под iOS вheadless-режиме
+          # Укажите вашу версию Unity, например 2022.3.x, если 'latest' не подходит
+          unity-editor -batchmode -quit -projectPath . -executeMethod BuildScript.BuildIOS -logFile build.log || cat build.log
+      - name: Build ipa with Xcode
+        script: |
+          # Путь к сгенерированному Xcode-проекту (обычно в папке build или корне)
+          cd build/iOS
+          xcodebuild -sdk iphoneos -configuration Release clean build
+    artifacts:
+      - '*.ipa'
+      - 'build/iOS/*.ipa'
